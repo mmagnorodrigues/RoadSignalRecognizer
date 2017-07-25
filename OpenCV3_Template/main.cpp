@@ -21,17 +21,10 @@ int main(int argv, char** argc) {
 			ushort* g = (ushort*)&p->y;
 			ushort* b = (ushort*)&p->z;
 
-			/*std::cout << *r << std::endl;
-			std::cout << *g << std::endl;
-			std::cout << *b << std::endl;*/
-
 			*r = 0;
 			*g = 0;
 			*b = 0;
 
-			/*std::cout << *r << std::endl;
-			std::cout << *g << std::endl;
-			std::cout << *b << std::endl;*/
 		}
 	}
 	imshow("Lenna", clone);
