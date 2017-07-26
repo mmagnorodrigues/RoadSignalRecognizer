@@ -1,4 +1,4 @@
-#include "ConvolutionMask.h"
+#include "ConvolutionMask.hpp"
 #include <cmath>
 
 ConvolutionMask::ConvolutionMask()
@@ -17,14 +17,12 @@ ConvolutionMask::ConvolutionMask(int side, ConvolutionMask::MaskType maskType)
 	switch (maskType)
 	{
 	case ConvolutionMask::AVERAGE:
-		int average = 1 / pow(side, 2);
+		// trocar o nome da variavel int average = 1 / pow(side, 2);
 		for (int i = 0; i < side; i++) {
 			for (int j = 0; j < side; j++) {
-				mask[i][j] = average;
+				//mask[i][j] = average;
 			}
 		}
-		break;
-	default:
 		break;
 	}
 }

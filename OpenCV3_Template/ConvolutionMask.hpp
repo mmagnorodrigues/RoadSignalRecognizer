@@ -6,9 +6,8 @@ class ConvolutionMask {
 public:
 	enum MaskType {AVERAGE};
 	ConvolutionMask();
-	ConvolutionMask(int, MaskType);
-
-private:
+	ConvolutionMask(int side, ConvolutionMask::MaskType maskType);
+	
 	int side;
 	float** mask;
 

@@ -151,10 +151,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConvolutionMask.hpp" />
+    <ClInclude Include="ParallelizeImage.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConvolutionMask.cpp" />
+    <ClCompile Include="ParallelizeImage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpenCV3_Template.cpp" />
     <ClCompile Include="stdafx.cpp" />
