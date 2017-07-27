@@ -1,8 +1,3 @@
-﻿  main.cpp
-  ParallelizeImage.cpp
-c:\users\mmagn\dropbox\ufrgs\pdp\parallelizelib\opencv3_template\parallelizeimage.cpp(63): warning C4244: 'argument': conversion from 'float' to 'uchar', possible loss of data
-  ConvolutionMask.cpp
-  Generating Code...
-cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
+﻿  ParallelizeImage.cpp
   OpenCV3_Template.vcxproj -> C:\Users\mmagn\Dropbox\UFRGS\PDP\ParallelizeLib\x64\Debug\OpenCV3_Template.exe
   OpenCV3_Template.vcxproj -> C:\Users\mmagn\Dropbox\UFRGS\PDP\ParallelizeLib\x64\Debug\OpenCV3_Template.pdb (Full PDB)

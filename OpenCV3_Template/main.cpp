@@ -17,6 +17,8 @@ int main(int argv, char** argc) {
 	ConvolutionMask* mask = new ConvolutionMask(side, ConvolutionMask::AVERAGE);
 	ParallelizeImage* parallel = new ParallelizeImage();
 
+	imshow("Lenna", clone);
+
 	parallel->partialConvolve(test, clone, 0, 0, test.cols, test.rows, *mask);
 
 	/*
@@ -36,7 +38,7 @@ int main(int argv, char** argc) {
 		}
 	}
 	*/
-	imshow("Lenna", clone);
+	imshow("Lenna", test);
 
 	waitKey();
 }

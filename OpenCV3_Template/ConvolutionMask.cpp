@@ -1,6 +1,8 @@
 #include "ConvolutionMask.hpp"
 #include <cmath>
 
+using namespace std;
+
 ConvolutionMask::ConvolutionMask()
 {
 	this->side = 0;
@@ -17,12 +19,14 @@ ConvolutionMask::ConvolutionMask(int side, ConvolutionMask::MaskType maskType)
 	switch (maskType)
 	{
 	case ConvolutionMask::AVERAGE:
-		// trocar o nome da variavel int average = 1 / pow(side, 2);
+		float averageType = side; // ((float)side*(float)side);
 		for (int i = 0; i < side; i++) {
 			for (int j = 0; j < side; j++) {
-				//mask[i][j] = average;
+	
+				mask[i][j] = averageType;
 			}
 		}
 		break;
 	}
+	this->side = side;
 }

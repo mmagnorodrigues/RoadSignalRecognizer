@@ -16,6 +16,7 @@ public:
 	void ParallelizeConvolve(Mat inImg, ConvolutionMask conv);
 	void partialConvolve(Mat inImg, Mat outImg, int imgMinX, int imgMinY, int imgMaxX, int imgMaxY, ConvolutionMask conv);
 
+	void print(string string);
 };
 
 #endif
