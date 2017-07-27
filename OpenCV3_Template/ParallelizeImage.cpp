@@ -39,32 +39,27 @@ void ParallelizeImage::partialConvolve(Mat inImg, Mat outImg, int imgMinX, int i
 			minMaskY = imgJ - maskEdge;
 			maxMaskX = imgI + maskEdge + rightBottonEdge;
 			maxMaskY = imgJ + maskEdge + rightBottonEdge;
-			/*std::cout << totalRed << std::endl;
-			std::cout << totalGreen << std::endl;
-			std::cout << totalBlue << std::endl;
-			std::cout << minMaskX << std::endl;
-			std::cout << minMaskY << std::endl;
-			std::cout << maxMaskX << std::endl;
-			std::cout << maxMaskY << std::endl;
-			std::cout << "***********************" << std::endl;*/
 
-
-			/*std::cout << "minMaskX " << minMaskX << std::endl;
-			std::cout << "maxMaskX" << maxMaskX << std::endl;*/
+			Vec3b color = inImg.at<Vec3b>(imgI, imgJ);
+			float red = (float)color.val[0];
+			float green = (float)color.val[1];
+			float blue = (float)color.val[2];
 
 			for (int maskI = minMaskX; maskI <= maxMaskX; maskI++) {
 				for (int maskJ = minMaskY; maskJ <= maxMaskY; maskJ++) {
-					int maskX = maskI - imgI;
-					int maskY = maskJ - imgJ;
+					int maskX = maskI - imgI + maskEdge;
+					int maskY = -(maskJ - imgJ - maskEdge);
+					//std::cout << maskX << " " << maskY << std::endl;
 					if (maskI < imgMaxX && maskJ < imgMaxY && maskI >= 0 && maskJ >=0 ) {
 						Vec3b color = inImg.at<Vec3b>(maskI, maskJ);
 						if (maskX < conv.side && maskY < conv.side && maskX >= 0 && maskY >= 0) {
 							float maskValue = conv.mask[maskX][maskY];
-							totalRed += (float)color.val[0] * (float)maskValue;
-							totalGreen += (float)color.val[1] * (float)maskValue;
-							totalBlue += (float)color.val[2] * (float)maskValue;
-
-							//std::cout << totalBlue << std::endl;
+							float red = (float)color.val[0];
+							float green = (float)color.val[1];
+							float blue = (float)color.val[2];
+							totalRed += red * (float)maskValue;
+							totalGreen += green * (float)maskValue;
+							totalBlue += blue * (float)maskValue;
 						}
 						else {
 						}

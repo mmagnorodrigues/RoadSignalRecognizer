@@ -19,7 +19,7 @@ ConvolutionMask::ConvolutionMask(int side, ConvolutionMask::MaskType maskType)
 	switch (maskType)
 	{
 	case ConvolutionMask::AVERAGE:
-		float averageType = side; // ((float)side*(float)side);
+		float averageType = 1/((float)side*(float)side);
 		for (int i = 0; i < side; i++) {
 			for (int j = 0; j < side; j++) {
 	
