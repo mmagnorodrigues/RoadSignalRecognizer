@@ -4,6 +4,10 @@
 ### C++ ###
 # Prerequisites
 *.d
+*.db
+*.idb
+*.pdb
+*.ilk
 
 *.opendb
 
