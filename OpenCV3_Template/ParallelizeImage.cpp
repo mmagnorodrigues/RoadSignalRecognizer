@@ -126,19 +126,35 @@ void ParallelizeImage::showImage(Mat img, int windowSizeX, int windowSizeY, stri
 	imshow(title, img);
 }
 
+void ParallelizeImage::convolve(Mat inImg, ConvolutionMask conv)
+{
+	if (isGrayImage(inImg)) {
+		Mat clone = inImg.clone();
+		partialConvolve(clone, inImg, 0, 0, inImg.cols, inImg.rows, conv);
+	}
+	else{
+		Mat channels[3];
+		split(inImg, channels);
+
+		Mat clone = inImg.clone();
+		Mat cloneChannels[3];
+		split(clone, cloneChannels);
+
+		for (int i = 0; i < 3; i++) {
+			partialConvolve(cloneChannels[i], channels[i], 0, 0, inImg.cols, inImg.rows, conv);
+		}
+		merge(channels, 3, inImg);
+	}
+}
+
 
 bool ParallelizeImage::isGrayImage(Mat img)
 {
-	Mat dst;
-	Mat bgr[3];
-	split(img, bgr);
-	absdiff(bgr[0], bgr[1], dst);
-
-	if (countNonZero(dst))
+	if (img.channels() > 1)
 		return false;
-
-	absdiff(bgr[0], bgr[2], dst);
-	return !countNonZero(dst);
+	else {
+		return true;
+	}
 }
 
 	

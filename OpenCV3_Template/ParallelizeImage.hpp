@@ -20,6 +20,7 @@ public:
 	void addAndBinarizeImgs(Mat img1, Mat img2, Mat outImg);
 	void print(string string);
 	void showImage(Mat img, int windowSizeX, int windowSizeY, string title);
+	void convolve(Mat inImg, ConvolutionMask conv);
 
 	bool isGrayImage(Mat img);
 };
