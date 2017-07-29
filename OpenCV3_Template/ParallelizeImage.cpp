@@ -1,4 +1,5 @@
 #include "ParallelizeImage.hpp"
+#include <thread>
 
 void ParallelizeImage::setPixelrgb(Mat inImg, uchar red, uchar green, uchar blue, int x, int y)
 {
@@ -19,7 +20,6 @@ void ParallelizeImage::setPixelGray(Mat inImg, uchar value, int x, int y)
 
 void ParallelizeImage::ParallelizeConvolve(Mat inImg, ConvolutionMask conv)
 {
-	Mat clone = inImg.clone();
 
 }
 
@@ -95,9 +95,9 @@ void ParallelizeImage::addAndBinarizeImgs(Mat img1, Mat img2, Mat outImg)
 		for (int y = 0; y < img1.rows; y++) {
 			Vec3b color1 = img1.at<Vec3b>(x, y);
 			Vec3b color2 = img1.at<Vec3b>(x, y);
-			red = color1.val[0] + color2.val[0];
-			green = color1.val[1] + color2.val[1];
-			blue = color1.val[2] + color2.val[2];
+			red = (float)color1.val[0] + (float)color2.val[0];
+			green = (float)color1.val[1] + (float)color2.val[1];
+			blue = (float)color1.val[2] + (float)color2.val[2];
 
 			if ((red + blue + green) >= 255) {
 				red = 255;
@@ -126,8 +126,10 @@ void ParallelizeImage::showImage(Mat img, int windowSizeX, int windowSizeY, stri
 	imshow(title, img);
 }
 
-void ParallelizeImage::convolve(Mat inImg, ConvolutionMask conv)
+void ParallelizeImage::convolve(Mat inImg, ConvolutionMask conv, bool parallel)
 {
+	thread threadsArray[3];
+
 	if (isGrayImage(inImg)) {
 		Mat clone = inImg.clone();
 		partialConvolve(clone, inImg, 0, 0, inImg.cols, inImg.rows, conv);
@@ -140,9 +142,22 @@ void ParallelizeImage::convolve(Mat inImg, ConvolutionMask conv)
 		Mat cloneChannels[3];
 		split(clone, cloneChannels);
 
-		for (int i = 0; i < 3; i++) {
-			partialConvolve(cloneChannels[i], channels[i], 0, 0, inImg.cols, inImg.rows, conv);
+		if (parallel) {
+			for (int i = 0; i < 3; i++) {
+
+				//threadsArray[i] = thread(&ParallelizeImage::partialConvolve, cloneChannels[i], channels[i], 0, 0, inImg.cols, inImg.rows, conv);
+				threadsArray[i] = thread([&](ParallelizeImage* parallel) {parallel->partialConvolve(cloneChannels[i], channels[i], 0, 0, inImg.cols, inImg.rows, conv); }, this);
+			}
+
+			for (int i = 0; i < 3; i++)
+				threadsArray[i].join();
 		}
+		else {
+			for (int i = 0; i < 3; i++) {
+				partialConvolve(cloneChannels[i], channels[i], 0, 0, inImg.cols, inImg.rows, conv);
+			}
+		}
+
 		merge(channels, 3, inImg);
 	}
 }
@@ -156,5 +171,4 @@ bool ParallelizeImage::isGrayImage(Mat img)
 		return true;
 	}
 }
-
 	
