@@ -4,7 +4,7 @@
 
 class ConvolutionMask {
 public:
-	enum MaskType {AVERAGE};
+	enum MaskType { AVERAGE, SOBEL_VER, SOBEL_HOR };
 	ConvolutionMask();
 	ConvolutionMask(int side, ConvolutionMask::MaskType maskType);
 	

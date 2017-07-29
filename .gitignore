@@ -8,6 +8,9 @@
 *.idb
 *.pdb
 *.ilk
+*.jpg
+*.jpeg
+*.png
 
 *.opendb
 
