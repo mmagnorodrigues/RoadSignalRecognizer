@@ -20,6 +20,7 @@ int main(int argv, char** argc) {
 	//parallel->sobelFilter(test, clone);
 	Mat channels[3];
 	split(clone, channels);
+	parallel->showImage(channels[0], 800, 800, "testao");
 	for (int i = 0; i < clone.cols; i++) {
 		for (int j = 0; j < clone.rows; j++) {
 			parallel->setPixelGray(channels[0], 0, i, j);

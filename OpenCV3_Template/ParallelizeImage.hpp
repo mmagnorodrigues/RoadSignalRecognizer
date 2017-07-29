@@ -19,6 +19,7 @@ public:
 	void sobelFilter(Mat inImg, Mat outImg);
 	void addAndBinarizeImgs(Mat img1, Mat img2, Mat outImg);
 	void print(string string);
+	void showImage(Mat img, int windowSizeX, int windowSizeY, string title);
 
 	bool isGrayImage(Mat img);
 };

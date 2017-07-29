@@ -149,6 +149,14 @@ void ParallelizeImage::print(string string)
 	std::cout << string << std::endl;
 }
 
+void ParallelizeImage::showImage(Mat img, int windowSizeX, int windowSizeY, string title)
+{
+	namedWindow(title, WINDOW_NORMAL);
+	resizeWindow(title, windowSizeX, windowSizeY);
+	imshow(title, img);
+}
+
+
 bool ParallelizeImage::isGrayImage(Mat img)
 {
 	Mat dst;
