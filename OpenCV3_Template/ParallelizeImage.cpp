@@ -25,7 +25,6 @@ void ParallelizeImage::ParallelizeConvolve(Mat inImg, ConvolutionMask conv)
 
 void ParallelizeImage::partialConvolve(Mat inImg, Mat outImg, int imgMinX, int imgMinY, int imgMaxX, int imgMaxY, ConvolutionMask conv)
 {	
-	float limiar = 150;
 	int maskEdge = (int)((conv.side - 1) / 2); //Distancia entre a borda da mascara e o centro
 	int rightBottonEdge = 0;
 	if (conv.side % 2 == 0) { //Se o lado da mascara tem tamanho par, o centro fica delocado para cima e para a esquerda
@@ -33,41 +32,24 @@ void ParallelizeImage::partialConvolve(Mat inImg, Mat outImg, int imgMinX, int i
 	}
 
 	int minMaskX, maxMaskX, minMaskY, maxMaskY;
-	float totalRed, totalGreen, totalBlue;
-	
+	float totalValue;
 	for (int imgI = imgMinX; imgI < imgMaxX; imgI++) {
 		for (int imgJ = imgMinY; imgJ < imgMaxY; imgJ++) {
-			
-			totalRed = 0;
-			totalGreen = 0;
-			totalBlue = 0;
+			totalValue = 0;
 			minMaskX = imgI - maskEdge;
 			minMaskY = imgJ - maskEdge;
 			maxMaskX = imgI + maskEdge + rightBottonEdge;
 			maxMaskY = imgJ + maskEdge + rightBottonEdge;
-
-			Vec3b color = inImg.at<Vec3b>(imgI, imgJ);
-			float red = (float)color.val[0];
-			float green = (float)color.val[1];
-			float blue = (float)color.val[2];
-
 			for (int maskI = minMaskX; maskI <= maxMaskX; maskI++) {
 				for (int maskJ = minMaskY; maskJ <= maxMaskY; maskJ++) {
-	
 					int maskX = maskI - imgI + maskEdge;
 					int maskY = -(maskJ - imgJ - maskEdge);
-					//std::cout << maskX << " " << maskY << std::endl;
 					if (maskI < imgMaxX && maskJ < imgMaxY && maskI >= 0 && maskJ >=0 ) {
-						Vec3b color = inImg.at<Vec3b>(maskI, maskJ);
+						float pixelvalue = (float)inImg.at<uchar>(maskI, maskJ);
 						if (maskX < conv.side && maskY < conv.side && maskX >= 0 && maskY >= 0) {
 							float maskValue = conv.mask[maskX][maskY];
-							float red = (float)color.val[0];
-							float green = (float)color.val[1];
-							float blue = (float)color.val[2];
-					
-							totalRed += red * (float)maskValue;
-							totalGreen += green * (float)maskValue;
-							totalBlue += blue * (float)maskValue;
+							float convValue = pixelvalue * maskValue;
+							totalValue += convValue;
 						}
 						else {
 						}
@@ -76,25 +58,13 @@ void ParallelizeImage::partialConvolve(Mat inImg, Mat outImg, int imgMinX, int i
 					}
 				}
 			}
-			if (totalBlue < 0) {
-				totalBlue *= -1;
-			}
-			if (totalRed < 0) {
-				totalRed *= -1;
-			}
-			if (totalGreen < 0) {
-				totalGreen *= -1;
-			}
-			if (totalBlue > 255) {
-				totalBlue = 255;
-			}
-			if (totalGreen > 255) {
-				totalGreen = 255;
-			}
-			if (totalRed > 255) {
-				totalRed = 255;
-			}
-			ParallelizeImage::setPixelrgb(outImg, (uchar)totalRed, (uchar)totalGreen, (uchar)totalBlue, imgI, imgJ);
+			if (totalValue < 0)
+				totalValue *= -1;
+			
+			if (totalValue > 255) 
+				totalValue = 255;
+			
+			ParallelizeImage::setPixelGray(outImg, (uchar)totalValue, imgI, imgJ);
 		}
 	}
 }

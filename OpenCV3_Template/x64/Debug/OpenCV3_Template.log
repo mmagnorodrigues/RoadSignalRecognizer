@@ -1,3 +1,6 @@
-﻿  main.cpp
+﻿  ParallelizeImage.cpp
+c:\users\mmagn\dropbox\ufrgs\pdp\parallelizelib\opencv3_template\parallelizeimage.cpp(98): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\mmagn\dropbox\ufrgs\pdp\parallelizelib\opencv3_template\parallelizeimage.cpp(99): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\mmagn\dropbox\ufrgs\pdp\parallelizelib\opencv3_template\parallelizeimage.cpp(100): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   OpenCV3_Template.vcxproj -> C:\Users\mmagn\Dropbox\UFRGS\PDP\ParallelizeLib\x64\Debug\OpenCV3_Template.exe
   OpenCV3_Template.vcxproj -> C:\Users\mmagn\Dropbox\UFRGS\PDP\ParallelizeLib\x64\Debug\OpenCV3_Template.pdb (Full PDB)

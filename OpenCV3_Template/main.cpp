@@ -20,16 +20,17 @@ int main(int argv, char** argc) {
 	//parallel->sobelFilter(test, clone);
 	Mat channels[3];
 	split(clone, channels);
-	parallel->showImage(channels[0], 800, 800, "testao");
+	/*parallel->showImage(channels[0], 800, 800, "testao");
 	for (int i = 0; i < clone.cols; i++) {
 		for (int j = 0; j < clone.rows; j++) {
 			parallel->setPixelGray(channels[0], 0, i, j);
 			parallel->setPixelGray(channels[1], 0, i, j);
 		}
 	}
-	merge(channels, 3, clone);
-	imshow("LennaC", clone);
-	imshow("Lenna", test);
+	merge(channels, 3, clone);*/
+	parallel->print("a");
+	parallel->partialConvolve(channels[0], channels[1], 0, 0, channels[0].cols, channels[1].rows, *mask);
+	parallel->showImage(channels[1], 800, 800, "baita teste");
 
 	waitKey();
 }
