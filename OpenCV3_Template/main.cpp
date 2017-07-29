@@ -17,8 +17,16 @@ int main(int argv, char** argc) {
 	ConvolutionMask* mask = new ConvolutionMask(side, ConvolutionMask::AVERAGE);
 	ParallelizeImage* parallel = new ParallelizeImage();
 	//parallel->partialConvolve(test, clone, 0, 0, clone.cols, clone.rows, *mask);
-	
-	parallel->sobelFilter(test, clone);
+	//parallel->sobelFilter(test, clone);
+	Mat channels[3];
+	split(clone, channels);
+	for (int i = 0; i < clone.cols; i++) {
+		for (int j = 0; j < clone.rows; j++) {
+			parallel->setPixelGray(channels[0], 0, i, j);
+			parallel->setPixelGray(channels[1], 0, i, j);
+		}
+	}
+	merge(channels, 3, clone);
 	imshow("LennaC", clone);
 	imshow("Lenna", test);
 

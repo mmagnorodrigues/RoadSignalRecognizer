@@ -1,6 +1,6 @@
 #include "ParallelizeImage.hpp"
 
-void ParallelizeImage::setPixel(Mat inImg, uchar red, uchar green, uchar blue, int x, int y)
+void ParallelizeImage::setPixelrgb(Mat inImg, uchar red, uchar green, uchar blue, int x, int y)
 {
 	Point3_<uchar>* pixel = inImg.ptr<Point3_<uchar>>(x, y);
 	uchar* r = (uchar*)&pixel->x;
@@ -10,6 +10,11 @@ void ParallelizeImage::setPixel(Mat inImg, uchar red, uchar green, uchar blue, i
 	*r = red;
 	*g = green;
 	*b = blue;
+}
+
+void ParallelizeImage::setPixelGray(Mat inImg, uchar value, int x, int y)
+{
+	*inImg.ptr(x, y) = value;
 }
 
 void ParallelizeImage::ParallelizeConvolve(Mat inImg, ConvolutionMask conv)
@@ -89,7 +94,7 @@ void ParallelizeImage::partialConvolve(Mat inImg, Mat outImg, int imgMinX, int i
 			if (totalRed > 255) {
 				totalRed = 255;
 			}
-			ParallelizeImage::setPixel(outImg, (uchar)totalRed, (uchar)totalGreen, (uchar)totalBlue, imgI, imgJ);
+			ParallelizeImage::setPixelrgb(outImg, (uchar)totalRed, (uchar)totalGreen, (uchar)totalBlue, imgI, imgJ);
 		}
 	}
 }
@@ -134,7 +139,7 @@ void ParallelizeImage::addAndBinarizeImgs(Mat img1, Mat img2, Mat outImg)
 				green = 0;
 				blue = 0;
 			}
-			setPixel(outImg, (uchar)red, (uchar)green, (uchar)blue, x, y);
+			setPixelrgb(outImg, (uchar)red, (uchar)green, (uchar)blue, x, y);
 		}
 	}
 }
@@ -142,6 +147,20 @@ void ParallelizeImage::addAndBinarizeImgs(Mat img1, Mat img2, Mat outImg)
 void ParallelizeImage::print(string string)
 {
 	std::cout << string << std::endl;
+}
+
+bool ParallelizeImage::isGrayImage(Mat img)
+{
+	Mat dst;
+	Mat bgr[3];
+	split(img, bgr);
+	absdiff(bgr[0], bgr[1], dst);
+
+	if (countNonZero(dst))
+		return false;
+
+	absdiff(bgr[0], bgr[2], dst);
+	return !countNonZero(dst);
 }
 
 	
