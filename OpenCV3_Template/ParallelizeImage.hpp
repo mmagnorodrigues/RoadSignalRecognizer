@@ -14,13 +14,13 @@ class ParallelizeImage{
 public:
 	void setPixelrgb(Mat inImg, uchar red, uchar green, uchar blue, int x, int y);
 	void setPixelGray(Mat inImg, uchar value, int x, int y);
-	void ParallelizeConvolve(Mat inImg, ConvolutionMask conv);
+	void parallelizeConvolve(Mat inImg, ConvolutionMask conv, int minStep);
 	void partialConvolve(Mat inImg, Mat outImg, int imgMinX, int imgMinY, int imgMaxX, int imgMaxY, ConvolutionMask conv);
 	void sobelFilter(Mat inImg, Mat outImg);
 	void addAndBinarizeImgs(Mat img1, Mat img2, Mat outImg);
 	void print(string string);
 	void showImage(Mat img, int windowSizeX, int windowSizeY, string title);
-	void convolve(Mat inImg, ConvolutionMask conv, bool parallel);
+	void convolve(Mat inImg, ConvolutionMask conv, bool parallel, int minStep);
 
 	bool isGrayImage(Mat img);
 };

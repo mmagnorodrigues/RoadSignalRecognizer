@@ -18,18 +18,56 @@ void ParallelizeImage::setPixelGray(Mat inImg, uchar value, int x, int y)
 	*inImg.ptr(x, y) = value;
 }
 
-void ParallelizeImage::ParallelizeConvolve(Mat inImg, ConvolutionMask conv)
+void ParallelizeImage::parallelizeConvolve(Mat inImg, ConvolutionMask conv, int minStep)
 {
+	float parallelizingRatio = 0.001;
+	int stepX = (int)(inImg.cols * parallelizingRatio);
+	int stepY = (int)(inImg.rows * parallelizingRatio);
 
+	if (stepX < minStep) {
+		stepX = minStep;
+	}
+	if (stepY < minStep) {
+		stepY = minStep;
+	}
+
+	std::vector<thread> threadsVector;
+	std::vector<thread>::iterator iter = threadsVector.begin();
+
+	Mat clone = inImg.clone();
+	thread* convolutor;
+	int maxX, maxY, i;
+	for (i = 0; i < (inImg.cols + stepX); i += stepX) {
+		if (i + stepX > inImg.cols) {
+			maxX = inImg.cols;
+		}
+		else {
+			maxX = i + stepX;
+		}
+		for (int j = 0; j < (inImg.rows + stepY); j += stepY) {
+
+			if (j + stepY > inImg.rows) {
+				maxY = inImg.rows;
+			}
+			else {
+				maxY = j + stepY;
+			}
+			convolutor = new thread([&](ParallelizeImage* parallel) {parallel->partialConvolve(clone, inImg, i, j, maxX, maxY, conv); }, this);
+			(*convolutor).join();
+		}
+	}
 }
 
 void ParallelizeImage::partialConvolve(Mat inImg, Mat outImg, int imgMinX, int imgMinY, int imgMaxX, int imgMaxY, ConvolutionMask conv)
-{	
+{
 	int maskEdge = (int)((conv.side - 1) / 2); //Distancia entre a borda da mascara e o centro
 	int rightBottonEdge = 0;
 	if (conv.side % 2 == 0) { //Se o lado da mascara tem tamanho par, o centro fica delocado para cima e para a esquerda
 		rightBottonEdge = 1;
 	}
+
+	int wholeImgLimitX = inImg.cols - 1;
+	int wholeImgLimitY = inImg.cols - 1;
 
 	int minMaskX, maxMaskX, minMaskY, maxMaskY;
 	float totalValue;
@@ -44,9 +82,9 @@ void ParallelizeImage::partialConvolve(Mat inImg, Mat outImg, int imgMinX, int i
 				for (int maskJ = minMaskY; maskJ <= maxMaskY; maskJ++) {
 					int maskX = maskI - imgI + maskEdge;
 					int maskY = -(maskJ - imgJ - maskEdge);
-					if (maskI < imgMaxX && maskJ < imgMaxY && maskI >= 0 && maskJ >=0 ) {
+					if (maskI < wholeImgLimitX && maskJ < wholeImgLimitY && maskI >= 0 && maskJ >=0 ) {
 						float pixelvalue = (float)inImg.at<uchar>(maskI, maskJ);
-						if (maskX < conv.side && maskY < conv.side && maskX >= 0 && maskY >= 0) {
+						if (maskX <= conv.side && maskY <= conv.side && maskX >= 0 && maskY >= 0) {
 							float maskValue = conv.mask[maskX][maskY];
 							float convValue = pixelvalue * maskValue;
 							totalValue += convValue;
@@ -126,7 +164,7 @@ void ParallelizeImage::showImage(Mat img, int windowSizeX, int windowSizeY, stri
 	imshow(title, img);
 }
 
-void ParallelizeImage::convolve(Mat inImg, ConvolutionMask conv, bool parallel)
+void ParallelizeImage::convolve(Mat inImg, ConvolutionMask conv, bool parallel, int minStep)
 {
 	thread threadsArray[3];
 
@@ -143,21 +181,14 @@ void ParallelizeImage::convolve(Mat inImg, ConvolutionMask conv, bool parallel)
 		split(clone, cloneChannels);
 
 		if (parallel) {
-			for (int i = 0; i < 3; i++) {
-
-				//threadsArray[i] = thread(&ParallelizeImage::partialConvolve, cloneChannels[i], channels[i], 0, 0, inImg.cols, inImg.rows, conv);
-				threadsArray[i] = thread([&](ParallelizeImage* parallel) {parallel->partialConvolve(cloneChannels[i], channels[i], 0, 0, inImg.cols, inImg.rows, conv); }, this);
-			}
-
+			for (int i = 0; i < 3; i++)
+				threadsArray[i] = thread([&](ParallelizeImage* parallel) {parallel->parallelizeConvolve(channels[i], conv, minStep); }, this);
 			for (int i = 0; i < 3; i++)
 				threadsArray[i].join();
 		}
-		else {
-			for (int i = 0; i < 3; i++) {
-				partialConvolve(cloneChannels[i], channels[i], 0, 0, inImg.cols, inImg.rows, conv);
-			}
-		}
-
+		else 
+			for (int i = 0; i < 3; i++)
+				parallelizeConvolve(channels[i], conv, minStep);
 		merge(channels, 3, inImg);
 	}
 }
