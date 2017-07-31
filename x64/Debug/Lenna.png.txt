@@ -1,0 +1,24 @@
+side = 7
+
+time: 0.571333 minStep: 30
+time: 0.593333 minStep: 60
+time: 0.549333 minStep: 90
+time: 1.873 minStep: 30
+time: 1.80533 minStep: 60
+time: 1.782 minStep: 90
+time: 1.82433 minStep: 120
+time: 1.74733 minStep: 150
+time: 1.747 minStep: 180
+time: 1.70167 minStep: 210
+time: 1.69133 minStep: 240
+time: 1.75367 minStep: 270
+time: 1.699 minStep: 300
+time: 1.77367 minStep: 330
+time: 1.907 minStep: 360
+time: 1.855 minStep: 390
+time: 1.92833 minStep: 420
+time: 1.86967 minStep: 450
+time: 1.94767 minStep: 480
+time: 2.17167 minStep: 510
+time: 2.12667 minStep: 540
+time: 2.00967 minStep: 570

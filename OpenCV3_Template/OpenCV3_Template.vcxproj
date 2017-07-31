@@ -151,12 +151,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Barrier.hpp" />
     <ClInclude Include="ConvolutionMask.hpp" />
     <ClInclude Include="ParallelizeImage.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Barrier.cpp" />
     <ClCompile Include="ConvolutionMask.cpp" />
     <ClCompile Include="ParallelizeImage.cpp" />
     <ClCompile Include="main.cpp" />

@@ -1,0 +1,2 @@
+time: 3.417 minStep: 30
+time: 1.28867 minStep: 60

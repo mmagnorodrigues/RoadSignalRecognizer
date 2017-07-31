@@ -30,6 +30,9 @@
     <ClInclude Include="ConvolutionMask.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Barrier.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParallelizeImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Barrier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
